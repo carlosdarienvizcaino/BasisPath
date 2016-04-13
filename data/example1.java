@@ -6,11 +6,11 @@ public void a(int a, int b, int c) {
        
       if (i % 2 == 0) {
           i = i + b;
-        } else {
+      } 
+      else {
           i = i + c;
-          print("in else");
        }
-          print("in loop");
+         print("in loop");
      }  // end-while
      
       print(i);

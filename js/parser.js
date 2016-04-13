@@ -1,4 +1,8 @@
 
+var ExpressionFactory    = require("./ExpressionFactory");
+var LiteralExpression    = require("./LiteralExpression");
+var EndOfBlockExpression = require("./EndOfBlockExpression");
+
 function Parser(data){
     
  	if (data == null){
@@ -6,12 +10,69 @@ function Parser(data){
     	return;
  	}
     
-    console.log(data);
     var lines = data.split("\n");
     lines  = this.removeWhiteSpacesGreaterThan2(lines);
-
     console.log(lines);
+    var tree = this.makeAST(lines);
 }
+
+Parser.prototype.makeAST = function(lines){
+
+	if ( lines != null){
+        
+		var a = this.doASTIteratively(lines);
+		this.printInOrder(a);    
+	}
+}
+
+Parser.prototype.doASTIteratively = function(lines){
+
+   var headExpression= ExpressionFactory.createExpression("parent");
+   var currentExpression;
+   var currentLine;
+
+   var stack = new Array();
+   stack.push(headExpression);
+
+   for (var i = 0; i < lines.length; i++){ 
+		currentLine = lines[i];
+
+		if (currentLine === undefined) continue;
+
+		if (currentLine === ' '){
+			console.log("White Spaces found");
+			continue;
+		}
+
+		currentExpression = this.createExpression(currentLine, i);
+
+		if ( currentExpression instanceof EndOfBlockExpression){
+			stack.pop();
+			continue;
+		}
+
+
+		var parentExpression = stack.pop(); 
+		parentExpression.addChild(currentExpression);
+		stack.push( parentExpression );
+
+		if ( !(currentExpression instanceof LiteralExpression)){
+			stack.push(currentExpression);
+		}
+
+	}
+
+   return headExpression;
+}
+
+Parser.prototype.createExpression = function(str,currentLine){
+
+  	var regularExpression = ExpressionFactory.createExpression(str); 
+  	regularExpression.line = currentLine;
+    regularExpression.description = str;
+    return regularExpression;
+}
+
 
 Parser.prototype.removeWhiteSpacesGreaterThan2 = function(lines){
     
@@ -20,6 +81,12 @@ Parser.prototype.removeWhiteSpacesGreaterThan2 = function(lines){
         
         line = line.replace("\r", ""); 
         line = line.replace(/\s+/g,' ');
+         
+        var indexOfComment = line.search("/");
+        
+        if ( indexOfComment != -1){
+        	line = line.substring(0,indexOfComment);
+        }
 
     	if ( !that.isStringEmpty(line)){  
     		return line;
@@ -48,5 +115,44 @@ Parser.prototype.isStringEmpty = function(str){
     
     return false;
 }
+
+Parser.prototype.printInOrder = function(regularExpression){
+
+	if (regularExpression == null ){
+		return;
+	}
+
+	var queue = new Array()
+	queue.push(regularExpression);
+
+	while (queue.length != 0) {
+        
+        var amountOfChildren = queue[0].children.length;
+        var currentExpression = queue[0];
+
+        var currentLevel = ""
+        currentLevel += " [ Parent : " + currentExpression.description + " ]\n";
+
+		for (var i = 0; i < amountOfChildren; i++){
+            
+         	currentLevel += "[ "  + currentExpression.children[i].description +  " ] ";
+
+         	if ( currentExpression.children[i].children.length !== 0){
+         		queue.push(currentExpression.children[i]);
+         	}
+
+		}
+
+		// Print line
+		console.log(currentLevel);
+        console.log("******************");
+
+		// Remove first element
+		queue.shift();
+	}
+
+	console.log("Done");
+}
+
 
 module.exports = Parser;
