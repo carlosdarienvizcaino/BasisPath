@@ -5,6 +5,8 @@ var EndOfBlockExpression = require("./EndOfBlockExpression");
 
 function Parser(data){
     
+    this.headExpression = null;
+
  	if (data == null){
     	console.log("Parser: recieved null data");
     	return;
@@ -12,17 +14,18 @@ function Parser(data){
     
     var lines = data.split("\n");
     lines  = this.removeWhiteSpacesGreaterThan2(lines);
-    console.log(lines);
-    var tree = this.makeAST(lines);
+    this.headExpression = this.makeAST(lines);
 }
 
 Parser.prototype.makeAST = function(lines){
 
 	if ( lines != null){
-        
-		var a = this.doASTIteratively(lines);
-		this.printInOrder(a);    
+		return this.doASTIteratively(lines);
 	}
+}
+
+Parser.prototype.getTree = function(){
+	return this.headExpression;
 }
 
 Parser.prototype.doASTIteratively = function(lines){
@@ -39,10 +42,7 @@ Parser.prototype.doASTIteratively = function(lines){
 
 		if (currentLine === undefined) continue;
 
-		if (currentLine === ' '){
-			console.log("White Spaces found");
-			continue;
-		}
+		if (currentLine === ' ') continue;
 
 		currentExpression = this.createExpression(currentLine, i);
 
@@ -59,7 +59,6 @@ Parser.prototype.doASTIteratively = function(lines){
 		if ( !(currentExpression instanceof LiteralExpression)){
 			stack.push(currentExpression);
 		}
-
 	}
 
    return headExpression;

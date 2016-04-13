@@ -5,7 +5,8 @@
 </head>
     
 <body>
-
+    
+     
     <textarea id="srcCodeData" rows="40" cols="40">
         Add source code here
     </textarea>
@@ -17,8 +18,28 @@
     <script >
         
         function doAction(){
+
            var value  = document.getElementById("srcCodeData").value;
-           console.log(value);
+           var data = { "data" : value};
+
+           value = JSON.stringify(data);
+
+           // Do Post
+           var http = new XMLHttpRequest();
+           var url = "http://localhost:3000/ast";
+           http.open("POST", url, true);
+           
+           http.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+           http.onreadystatechange = function(){
+
+                    if(http.readyState == 4 && http.status == 200 ){
+                        console.log( http.responseText );
+                    }
+           }
+          
+           http.send(value);
+
 
         }
     </script>
