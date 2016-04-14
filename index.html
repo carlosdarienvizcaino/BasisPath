@@ -6,46 +6,22 @@
     
 <body>
     
-
+    <script>
     <textarea id="srcCodeData" rows="40" cols="40">
-       Add Source Code Here
+        Add source code here
     </textarea>
 
-    <button type="button" onclick="sendPostRequest()">
+    <button type="button" onclick="doAction()">
         Create Graph
     </button>
-
+    
     <script >
         
-        var tree;
-        function sendPostRequest(){
-           
+        function doAction(){
            var value  = document.getElementById("srcCodeData").value;
-           var data = { "data" : value};
+           console.log(value);
 
-           value = JSON.stringify(data);
-
-           // Do Post
-           var http = new XMLHttpRequest();
-           var url = "http://localhost:3000/ast";
-           http.open("POST", url, true);
-           
-           http.setRequestHeader('Content-type','application/json; charset=utf-8');
-
-           http.onreadystatechange = function(){
-
-                    if(http.readyState == 4 && http.status == 200 ){
-                        renderAST( http.responseText );
-                    }
-           }
-          
-           http.send(value);
         }
-
-        function renderAST(tree){
-                console.log(tree);
-        }
-
     </script>
 </body>
 </html>

@@ -14,7 +14,10 @@ function Parser(data){
     
     var lines = data.split("\n");
     lines  = this.removeWhiteSpacesGreaterThan2(lines);
-    
+
+    lines = lines.filter(str => { if(str !== undefined) return str; } );
+
+    console.log(lines);
     this.headExpression = this.makeAST(lines);
     this.printInOrder(this.headExpression);
 }
@@ -41,7 +44,7 @@ Parser.prototype.doASTIteratively = function(lines){
    var stack = new Array();
    stack.push(headExpression);
 
-   for (var i = 0; i < lines.length; i++){ 
+   for (var i = 0; i < lines.length - 1; i++){ 
 		currentLine = lines[i];
 
 		if (currentLine === undefined) continue;
@@ -51,7 +54,11 @@ Parser.prototype.doASTIteratively = function(lines){
 		currentExpression = ExpressionFactory.createExpression(currentLine);
 
 		if ( currentExpression instanceof EndOfBlockExpression){
-			stack.pop();
+
+            if (!lines[i+1].includes("else")){
+				stack.pop();
+            }
+
 			continue;
 		}
         
@@ -66,6 +73,9 @@ Parser.prototype.doASTIteratively = function(lines){
 		parentExpression.addChild(currentExpression);
 
 		stack.push( parentExpression );
+
+		console.log("currentLine " + currentLine);
+		console.log(currentExpression);
 
 		if ( !(currentExpression instanceof LiteralExpression)){
 			stack.push(currentExpression);
