@@ -6,19 +6,20 @@
     
 <body>
     
-     
+
     <textarea id="srcCodeData" rows="40" cols="40">
-        Add source code here
+       Add Source Code Here
     </textarea>
 
-    <button type="button" onclick="doAction()">
+    <button type="button" onclick="sendPostRequest()">
         Create Graph
     </button>
-    
+
     <script >
         
-        function doAction(){
-
+        var tree;
+        function sendPostRequest(){
+           
            var value  = document.getElementById("srcCodeData").value;
            var data = { "data" : value};
 
@@ -34,14 +35,17 @@
            http.onreadystatechange = function(){
 
                     if(http.readyState == 4 && http.status == 200 ){
-                        console.log( http.responseText );
+                        renderAST( http.responseText );
                     }
            }
           
            http.send(value);
-
-
         }
+
+        function renderAST(tree){
+                console.log(tree);
+        }
+
     </script>
 </body>
 </html>

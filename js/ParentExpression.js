@@ -1,10 +1,10 @@
 
 
-function ParentExpression(line, description){
+function ParentExpression(name,parent){
     
     this.instance = "ParentExpression";
-	this.line = line || -1;
-	this.description  = description || "";
+	this.name = name || "";
+    this.parent   = parent || null;
 	this.children = [];
 }
 

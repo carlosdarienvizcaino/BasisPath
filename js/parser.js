@@ -14,7 +14,9 @@ function Parser(data){
     
     var lines = data.split("\n");
     lines  = this.removeWhiteSpacesGreaterThan2(lines);
+    
     this.headExpression = this.makeAST(lines);
+    this.printInOrder(this.headExpression);
 }
 
 Parser.prototype.makeAST = function(lines){
@@ -31,6 +33,8 @@ Parser.prototype.getTree = function(){
 Parser.prototype.doASTIteratively = function(lines){
 
    var headExpression= ExpressionFactory.createExpression("parent");
+   headExpression.name = "parent";
+
    var currentExpression;
    var currentLine;
 
@@ -44,16 +48,23 @@ Parser.prototype.doASTIteratively = function(lines){
 
 		if (currentLine === ' ') continue;
 
-		currentExpression = this.createExpression(currentLine, i);
+		currentExpression = ExpressionFactory.createExpression(currentLine);
 
 		if ( currentExpression instanceof EndOfBlockExpression){
 			stack.pop();
 			continue;
 		}
-
-
+        
+        // Get Parent 
 		var parentExpression = stack.pop(); 
+        
+        // Set expression branch name and parent
+	    currentExpression.name = currentLine;
+	    currentExpression.parent = parentExpression.name;
+        
+        // Add expression to parent
 		parentExpression.addChild(currentExpression);
+
 		stack.push( parentExpression );
 
 		if ( !(currentExpression instanceof LiteralExpression)){
@@ -64,11 +75,11 @@ Parser.prototype.doASTIteratively = function(lines){
    return headExpression;
 }
 
-Parser.prototype.createExpression = function(str,currentLine){
+Parser.prototype.createExpression = function(str,parent){
 
   	var regularExpression = ExpressionFactory.createExpression(str); 
-  	regularExpression.line = currentLine;
-    regularExpression.description = str;
+  	regularExpression.name= str;
+    regularExpression.parent= parent;
     return regularExpression;
 }
 
