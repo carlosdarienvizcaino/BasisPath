@@ -19,7 +19,7 @@ function Parser(data){
 
     console.log(lines);
     this.headExpression = this.makeAST(lines);
-    this.printInOrder(this.headExpression);
+//    this.printInOrder(this.headExpression);
 }
 
 Parser.prototype.makeAST = function(lines){
@@ -40,6 +40,7 @@ Parser.prototype.doASTIteratively = function(lines){
 
    var currentExpression;
    var currentLine;
+   var previousParent;
 
    var stack = new Array();
    stack.push(headExpression);
@@ -52,13 +53,16 @@ Parser.prototype.doASTIteratively = function(lines){
 		if (currentLine === ' ') continue;
 
 		currentExpression = ExpressionFactory.createExpression(currentLine);
+        
+        if ( currentLine.includes("else") ){
+
+            console.log(previousParent);
+            stack.push(previousParent);
+            previousParent = null;
+        }
 
 		if ( currentExpression instanceof EndOfBlockExpression){
-
-            if (!lines[i+1].includes("else")){
-				stack.pop();
-            }
-
+            previousParent = stack.pop();
 			continue;
 		}
         
@@ -72,10 +76,9 @@ Parser.prototype.doASTIteratively = function(lines){
         // Add expression to parent
 		parentExpression.addChild(currentExpression);
 
-		stack.push( parentExpression );
-
-		console.log("currentLine " + currentLine);
-		console.log(currentExpression);
+        if (!currentLine.includes("else")){
+            stack.push( parentExpression );
+        }
 
 		if ( !(currentExpression instanceof LiteralExpression)){
 			stack.push(currentExpression);
