@@ -46,9 +46,11 @@ public void a(int a, int b, int c) {
           i = i + c;
        }
          print("in loop");
+         print("in loop 2);
      }  // end-while
      
       print(i);
+      print(i+2);
 }
   </textarea>
 
@@ -57,7 +59,7 @@ public void a(int a, int b, int c) {
     </button>
 
 <!-- load the d3.js library -->	
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/d3.v3.js"></script>
 	
 <script>
 
@@ -65,15 +67,45 @@ var treeData = [
   {
     "name": "Top Level",
     "parent": "null",
-    "children": [ ]
-  } 
+    "children": [
+
+    {
+    	"name": "Left Node",
+   	    "parent": "null",
+        "children": []
+   },
+   {
+    	"name": "Right Node",
+   	    "parent": "null",
+        "children": []
+   } 
+
+    ]
+  },
+
+  {
+    	"name": "Left Node",
+   	    "parent": "null",
+        "children": []
+   },
+   
+   {
+    	"name": "Right Node",
+   	    "parent": "null",
+        "children": []
+   }
+
 ];
 
+var myLinks = [
+	{"source": treeData[0], "target": treeData[1] },
+	{"source": treeData[0], "target": treeData[2] }
+];
 
 // ************** Generate the tree diagram	 *****************
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
-	width = 960 - margin.right - margin.left,
-	height = 500 - margin.top - margin.bottom;
+var margin = {top: 10, right: 5, bottom: 10, left: 5},
+	width = 1500 - margin.right - margin.left,
+	height = 600 - margin.top - margin.bottom;
 	
 var i = 0,
 	duration = 750,
@@ -102,8 +134,16 @@ d3.select(self.frameElement).style("height", "500px");
 function update(source) {
 
   // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse(),
-	  links = tree.links(nodes);
+  var nodes = tree.nodes(root).reverse();
+  var links = tree.links(nodes);
+ 
+  var aLink = Object.create(links[0]);
+
+  aLink.source = treeData[2];
+  aLink.target = treeData[1];
+  links.push(aLink);
+
+  console.log("Links: " + links);
 
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });

@@ -5,8 +5,17 @@ function ConditionalExpression(line, description){
   this.instance = "ConditionalExpression";
 }
 
-ConditionalExpression.prototype.addChild = function(child){
-	this.children.push(child);
+ConditionalExpression.prototype = Object.create(ParentExpression.prototype);
+
+ConditionalExpression.prototype.isANestedConditional = function(){
+
+	if (this.name.includes("if") ){
+		var sencodChild = this.children[1];
+		if (sencodChild != undefined && sencodChild.name.includes("else")){
+			return true;
+		}	
+	}
+	return false;
 }
 
 module.exports = ConditionalExpression;

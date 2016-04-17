@@ -11,10 +11,11 @@ public void a(int a, int b, int c) {
           i = i + c;
        }
          print("in loop");
+         print("in loop 2");
      }  // end-while
      
       print(i);
+      print(i+2);
 }
-
 
 

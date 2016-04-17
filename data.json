@@ -1,0 +1,9 @@
+{
+  "nodes" : [
+    {"name": "Carlos", "group": 1},
+    {"name": "Vizcaino", "group": 2}
+  ],
+  "links" : [
+   { "name": 1, "target": 2} 
+  ]
+}

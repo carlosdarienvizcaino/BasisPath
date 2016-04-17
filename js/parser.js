@@ -19,7 +19,12 @@ function Parser(data){
 
     console.log(lines);
     this.headExpression = this.makeAST(lines);
-//    this.printInOrder(this.headExpression);
+    console.log("--------------------");
+    console.log(this.headExpression);
+
+    this.headExpression = this.creatExecutionTree( this.headExpression );
+
+    this.printInOrder(this.headExpression); 
 }
 
 Parser.prototype.makeAST = function(lines){
@@ -56,7 +61,6 @@ Parser.prototype.doASTIteratively = function(lines){
         
         if ( currentLine.includes("else") ){
 
-            console.log(previousParent);
             stack.push(previousParent);
             previousParent = null;
         }
@@ -87,6 +91,88 @@ Parser.prototype.doASTIteratively = function(lines){
 
    return headExpression;
 }
+
+Parser.prototype.creatExecutionTree = function(tree){
+
+    if (tree == null){
+        console.log( "Tree is null");
+        return;
+    }
+
+    if ( tree.getChild(0) == null ){
+       console.log("Tree does not have children");
+       return;
+    }
+    
+    this.doExecutionPath(tree.getChild(0));
+    return tree;
+}
+
+Parser.prototype.doExecutionPath = function (parentNode){
+
+   var currentNode = null;
+   var previousNode = null;
+   var childrenAmount = parentNode.children.length; 
+     
+   // Don't inlcude the first child
+   for (var i = childrenAmount - 1; i >= 0; --i){
+        
+		currentNode = parentNode.getChild(i);	
+   		if (parentNode.instance === "ConditionalExpression"){
+
+  			if (i != 0){
+             
+            	if (parentNode.isANestedConditional() ){
+
+            		// Last Child
+            		var lastNodeToTheRight = parentNode.getChild( parentNode.children.length - 1);
+             		previousNode = parentNode.getChild(i-1);
+
+             		previousNode.addChild(lastNodeToTheRight);
+
+             		if ( i == 1 ){
+             			parentNode.children.splice(parentNode.children.length-1,1);
+             		}
+
+            	}
+            	else if ( parentNode.name.includes("else")){
+
+            		previousNode = parentNode.getChild(i-1);
+					previousNode.addChild(currentNode);
+             		parentNode.children.splice(i,1);
+            	}
+            	else {
+
+             		previousNode = parentNode.getChild(i-1);
+             		previousNode.addChild(currentNode);
+
+                	// Remove from parent 
+                	// Is is not the last child
+                	if ( i < childrenAmount - 1){
+             			parentNode.children.splice(i,1);
+                	}
+  				}
+  			}
+  		}
+  		else {
+            
+            // Not the first node from left to right 
+            if (i!=0){
+             	previousNode = parentNode.getChild(i-1);
+
+             	previousNode.addChild(currentNode);
+             	parentNode.children.splice(i,1);
+            }	
+  		}
+
+  		if (currentNode.instance === "ConditionalExpression"){
+  			this.doExecutionPath(currentNode);
+  		}
+   
+    }
+}
+
+
 
 Parser.prototype.createExpression = function(str,parent){
 

@@ -6,8 +6,6 @@ function LiteralExpression(line, description){
   this.instance = "LiteralExpression";
 }
 
-LiteralExpression.prototype.addChild = function(child){
- 	console.warn("LiteraExpression: does not add child %s", child);
-}
+LiteralExpression.prototype = Object.create(ParentExpression.prototype);
 
 module.exports = LiteralExpression;

@@ -4,9 +4,10 @@
 var FileReader = require("./filereader");
 var Parser     = require("./parser");
 
-//var filePath = "/Projects/48Hours/BasisPath/data/example1.java";
+var filePath = "/Projects/48Hours/BasisPath/data/example1.java";
 
-var filePath = "/Users/Carlos/workspace/48HOurs/BasisPath/data/example1.java";
+//var filePath = "/Users/Carlos/workspace/48HOurs/BasisPath/data/example1.java";
+
 var fileData = FileReader(filePath);
 
 var dataAsAtree = new Parser(fileData);

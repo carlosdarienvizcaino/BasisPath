@@ -6,8 +6,6 @@ function FunctionExpression(line, description){
   this.instance = "FunctionExpression";
 }
 
-FunctionExpression.prototype.addChild = function(child){
-	this.children.push(child);
-}
+FunctionExpression.prototype = Object.create(ParentExpression.prototype);
 
 module.exports = FunctionExpression;

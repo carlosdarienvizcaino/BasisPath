@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('*', function(req, res) {
-    res.sendfile('./exampleindex.html');
+    res.sendfile('./forcegraph.html');
 });
 
 app.post('/ast', function(req,res){
