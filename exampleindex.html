@@ -239,7 +239,7 @@ function click(d) {
   update(d);
 }
 
-function sendPostRequest(){
+function sendPostRequest(wantedGraph){
    
    var value  = document.getElementById("srcCodeData").value;
    var data = { "data" : value};
@@ -257,63 +257,19 @@ function sendPostRequest(){
             
             console.log(this);
             if ( http.readyState == 4 && http.status == 200 ){
-                renderAST(JSON.parse(http.responseText));
+                renderAST(JSON.parse(http.responseText),wantedGraph);
             }
    }
   
    http.send(value);
 }
 
-function createPostRequest(){
-
-   var value  = document.getElementById("srcCodeData").value;
-   var data = { "data" : value};
-
-   value = JSON.stringify(data);
-
-   // Do Post
-   var http = new XMLHttpRequest();
-   var url = "http://localhost:3000/ast";
-   http.open("POST", url, true);
-   
-   http.setRequestHeader('Content-type','application/json; charset=utf-8');
-
-   return {
-
-   	"http": http,
-    "data": value
-   }
-}
-
 function doCodeFlowGraph(){
-   
-   var request = createPostRequest(); 
-   var http = request.http;
-
-   http.onreadystatechange = function(){
-            
-            if ( http.readyState == 4 && http.status == 200 ){
-                renderAST(JSON.parse(http.responseText), "AST");
-            }
-   }
-  
-   http.send(request.data);
+		sendPostRequest("AST");
 }
-
-
 
 function doControlFlowGraph(){
-	var request = createPostRequest(); 
-   var http = request.http;
-
-   http.onreadystatechange = function(){
-            
-            if ( http.readyState == 4 && http.status == 200 ){
-                renderAST(JSON.parse(http.responseText), "CFG");
-            }
-   }
-  
-   http.send(request.data);
+ 		sendPostRequest("CFG");
 }
 
 function renderAST(data, wantedGraph){
