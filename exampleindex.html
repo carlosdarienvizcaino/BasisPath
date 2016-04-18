@@ -54,8 +54,12 @@ public void a(int a, int b, int c) {
 }
   </textarea>
 
-    <button type="button" onclick="sendPostRequest()">
-        Create Graph
+    <button type="button" onclick="doCodeFlowGraph()">
+        Code Flow Graph
+    </button>
+    
+    <button type="button" onclick="doControlFlowGraph()">
+        Control Flow Graph
     </button>
 
 <!-- load the d3.js library -->	
@@ -97,10 +101,6 @@ var treeData = [
 
 ];
 
-var myLinks = [
-	{"source": treeData[0], "target": treeData[1] },
-	{"source": treeData[0], "target": treeData[2] }
-];
 
 // ************** Generate the tree diagram	 *****************
 var margin = {top: 10, right: 5, bottom: 10, left: 5},
@@ -109,7 +109,10 @@ var margin = {top: 10, right: 5, bottom: 10, left: 5},
 	
 var i = 0,
 	duration = 750,
-	root;
+	abstractSyntaxTreeRoot,
+	flowChartRoot;
+
+var responseData;
 
 var tree = d3.layout.tree()
 	.size([height, width]);
@@ -123,28 +126,26 @@ var svg = d3.select("body").append("svg")
   .append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-root = treeData[0];
-root.x0 = height / 2;
-root.y0 = 0;
+abstractSyntaxTreeRoot = treeData[0];
+flowChartRoot = treeData[0];
+
+abstractSyntaxTreeRoot.x0 = height / 2;
+abstractSyntaxTreeRoot.y0 = 0;
+
+flowChartRoot.x0 = height;
+flowChartRoot.y0 = 50;
   
-update(root);
+update(abstractSyntaxTreeRoot);
+update(flowChartRoot);
 
 d3.select(self.frameElement).style("height", "500px");
 
 function update(source) {
 
   // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse();
+  var nodes = tree.nodes(abstractSyntaxTreeRoot).reverse();
   var links = tree.links(nodes);
- 
-  var aLink = Object.create(links[0]);
-
-  aLink.source = treeData[2];
-  aLink.target = treeData[1];
-  links.push(aLink);
-
-  console.log("Links: " + links);
-
+   
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
@@ -253,25 +254,80 @@ function sendPostRequest(){
    http.setRequestHeader('Content-type','application/json; charset=utf-8');
 
    http.onreadystatechange = function(){
-
+            
+            console.log(this);
             if ( http.readyState == 4 && http.status == 200 ){
-                renderAST( JSON.parse(http.responseText) );
+                renderAST(JSON.parse(http.responseText));
             }
    }
   
    http.send(value);
 }
 
-function renderAST(tree){
-	  console.log(tree); 
-	  treeData = [];
-      treeData.push(tree);
+function createPostRequest(){
 
-      root = treeData[0];
-      root.x0 = height / 2;
-      root.y0 = 0;
+   var value  = document.getElementById("srcCodeData").value;
+   var data = { "data" : value};
+
+   value = JSON.stringify(data);
+
+   // Do Post
+   var http = new XMLHttpRequest();
+   var url = "http://localhost:3000/ast";
+   http.open("POST", url, true);
+   
+   http.setRequestHeader('Content-type','application/json; charset=utf-8');
+
+   return {
+
+   	"http": http,
+    "data": value
+   }
+}
+
+function doCodeFlowGraph(){
+   
+   var request = createPostRequest(); 
+   var http = request.http;
+
+   http.onreadystatechange = function(){
+            
+            if ( http.readyState == 4 && http.status == 200 ){
+                renderAST(JSON.parse(http.responseText), "AST");
+            }
+   }
   
-     update(root);
+   http.send(request.data);
+}
+
+
+
+function doControlFlowGraph(){
+	var request = createPostRequest(); 
+   var http = request.http;
+
+   http.onreadystatechange = function(){
+            
+            if ( http.readyState == 4 && http.status == 200 ){
+                renderAST(JSON.parse(http.responseText), "CFG");
+            }
+   }
+  
+   http.send(request.data);
+}
+
+function renderAST(data, wantedGraph){
+	  
+	  console.log(data[wantedGraph]);
+
+	  treeData = [];
+      treeData.push(data[wantedGraph]);
+      
+      abstractSyntaxTreeRoot = treeData[0];
+      abstractSyntaxTreeRoot.x0 = height / 2;
+      abstractSyntaxTreeRoot.y0 = 0;
+
+     update(abstractSyntaxTreeRoot);
 }
 
 

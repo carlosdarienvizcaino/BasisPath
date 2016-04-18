@@ -6,6 +6,7 @@ var EndOfBlockExpression = require("./EndOfBlockExpression");
 function Parser(data){
     
     this.headExpression = null;
+    this.codeFlowGraph = null;
 
  	if (data == null){
     	console.log("Parser: recieved null data");
@@ -17,14 +18,12 @@ function Parser(data){
 
     lines = lines.filter(str => { if(str !== undefined) return str; } );
 
-    console.log(lines);
     this.headExpression = this.makeAST(lines);
-    console.log("--------------------");
-    console.log(this.headExpression);
 
-    this.headExpression = this.creatExecutionTree( this.headExpression );
 
-    this.printInOrder(this.headExpression); 
+    this.codeFlowGraph = this.makeAST(lines);
+    
+    this.codeFlowGraph= this.creatExecutionTree( this.codeFlowGraph);
 }
 
 Parser.prototype.makeAST = function(lines){
@@ -34,8 +33,11 @@ Parser.prototype.makeAST = function(lines){
 	}
 }
 
-Parser.prototype.getTree = function(){
-	return this.headExpression;
+Parser.prototype.getGraphs= function(){
+	return {
+      "AST": this.headExpression,
+      "CFG": this.codeFlowGraph
+	};
 }
 
 Parser.prototype.doASTIteratively = function(lines){

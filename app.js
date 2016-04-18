@@ -13,13 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('*', function(req, res) {
-    res.sendfile('./forcegraph.html');
+    res.sendfile('./exampleindex.html');
 });
 
 app.post('/ast', function(req,res){
    
    var parser = new Parser(req.body.data);
-   res.send(parser.getTree());  
+   console.log(parser.getGraphs() );
+   res.send(parser.getGraphs());  
 });
 
 app.listen(3000, function() {
