@@ -2,7 +2,7 @@
   "name": "baispath",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
@@ -13,7 +13,8 @@
   },
   "dependencies": {
       "express": "^4.13.4",
-      "jade": "^1.11.0"
+      "jade": "^1.11.0",
+      "body-parser": "~1.4.2"
   },
   "homepage": "https://github.com/carlosdarienvizcaino/BasisPath/blob/master/README.txt"
 }

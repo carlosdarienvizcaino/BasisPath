@@ -1,28 +1,31 @@
 
 var express = require('express');
-var bodyParser = require('body-parser');
-
-var Parser  = require('./js/parser')
 var app = express();
 
-app.set('views', '.');
-app.use(express.static('js'));
+var bodyParser = require('body-parser');
 
+// Set port
+var port = process.env.PORT || 3000;
+
+// Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Parse application/json
 app.use(bodyParser.json());
+
+
+app.set('views', '.');
+
+app.use(express.static('js'));
 
 app.get('*', function(req, res) {
     res.sendfile('./exampleindex.html');
 });
 
-app.post('/ast', function(req,res){
-   
-   var parser = new Parser(req.body.data);
-   console.log(parser.getGraphs() );
-   res.send(parser.getGraphs());  
-});
+// routes
+var routes = require('./routes')(app);
 
-app.listen(3000, function() {
-    console.log("BasisPath hosted by Express on port 3000!");
+// Start app at http://localhost:3000
+app.listen(port, function() {
+    console.log("BasisPath hosted by Express on port " + port + " !");
 })
