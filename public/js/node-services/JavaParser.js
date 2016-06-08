@@ -1,8 +1,9 @@
 
-var ExpressionFactory    = require("./ExpressionFactory");
-var LiteralExpression    = require("./LiteralExpression");
-var EndOfBlockExpression = require("./EndOfBlockExpression");
+// public/js/node-services/JavaParser.js
 
+var ExpressionFactory    = require("./expressions/ExpressionFactory");
+var LiteralExpression    = require("./expressions/LiteralExpression");
+var EndOfBlockExpression = require("./expressions/EndOfBlockExpression");
 function Parser(data){
     
     this.headExpression = null;
@@ -265,5 +266,14 @@ Parser.prototype.printInOrder = function(regularExpression){
 	console.log("Done");
 }
 
+function handleRequest(req,res){
+    
+    var parser = new Parser(req.body.state);
+    res.status(200).send(parser.getGraphics);
+    
+}
 
-module.exports = Parser;
+module.exports = {
+    handleRequest : handleRequest
+}
+    

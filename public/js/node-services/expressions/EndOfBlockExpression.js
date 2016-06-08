@@ -1,4 +1,3 @@
-
 var ParentExpression = require("./ParentExpression")
 
 function EndOfBlockExpression(line, description){

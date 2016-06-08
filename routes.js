@@ -3,6 +3,8 @@
 
 // require
 var gatewayAPI = require("./public/js/node-services/GatewayAPI");
+var javaParser = require("./public/js/node-services/JavaParser");
+
 
 module.exports = function(app){
     
@@ -15,5 +17,9 @@ module.exports = function(app){
     app.post('/api/basispath', function(req, res){
         gatewayAPI.handleRequest(req,res);
     });
-
+    
+    // Java Parser API
+    app.post('/api/javaparser', function(req,res){
+        javaParser.handleRequest(req,res);            
+    });
 }
