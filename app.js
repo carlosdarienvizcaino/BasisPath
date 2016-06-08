@@ -1,6 +1,16 @@
 
 var express = require('express');
 var app = express();
+var MongoClient = require('mongodb').MongoClient;
+var assert = require('assert');
+
+var url = 'mongodb://localhost:27017/imports';
+
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+    console.log("Connected correctly to server.");
+      db.close();
+});
 
 var bodyParser = require('body-parser');
 
@@ -12,7 +22,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Parse application/json
 app.use(bodyParser.json());
-
 
 app.set('views', '.');
 
