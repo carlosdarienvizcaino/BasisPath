@@ -1,6 +1,9 @@
 
 // public/js/node-services/CF.js
 
+var DB = require("../db/ControlFlowDB");
+
+
 // Converts and abstract syntax tree to a binary tree.
 function createExecutionTree(tree){
     
@@ -85,6 +88,10 @@ function doExecutionPath(parentNode){
 
 function handleRequest(req,res){
     // Log to a file
+    DB.save({
+        codeType : "c#",
+        status   : "STARTED"
+    });  
     res.status(200).send("Request reached Control Flow Service");
 }
 
