@@ -21,8 +21,8 @@ function save(data){
   
     var batchModel = new BatchModel(data); 
     batchModel.save(function(err){
-        if (err) throw err;
-        console.log("User saved successfully");
+    	if (err) throw err;
+	console.log("Parser Batch was saved successfully");
     });
 }
 
