@@ -2,7 +2,7 @@
 // routes.js
 
 // require
-var gatewayAPI  = require("./public/js/node-services/GatewayAPI");
+var gatewayAPI  = require("./public/js/node-services/gateway-api-service/GatewayAPI");
 var javaParser  = require("./public/js/node-services/JavaParser");
 var ast         = require('./public/js/node-services/AST');
 var controlFlow = require('./public/js/node-services/CF');
