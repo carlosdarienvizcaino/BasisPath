@@ -80,7 +80,6 @@ function handleRequest(req,res){
     var parser = new Parser(req.body.state);
 	DB.save({
 		codeType : "java"
-    	console.log("Batch was already saved");
     });	
     res.status(200).send("Request was recieved by Parser");
 }
