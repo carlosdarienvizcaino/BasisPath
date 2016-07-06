@@ -13,12 +13,12 @@ var postToJavaParserOptions = {
 
 
 function postToJavaParser(data){
-    
+    console.log("postToJavaParser()");
     data = querystring.stringify(data);
     
-    /*var req = http.request(postToJavaParserOptions, function(res){
-     // res.setEncoding('utf8');
-      
+    var req = http.request(postToJavaParserOptions, function(res){
+      res.setEncoding('utf8');
+      console.log("postToJavaParser Request()");
       res.on('data', (chunk) => {
         console.log(`BODY: ${chunk}`);
       });
@@ -28,7 +28,7 @@ function postToJavaParser(data){
       });
       
     });
-    */
+    
     var req = http.request(postToJavaParserOptions);
     
     req.on('error', () => {
@@ -37,6 +37,7 @@ function postToJavaParser(data){
     
     req.write(data);
     req.end();
+    console.log("end of postToJavaParser()");
 }
 
 module.exports = {

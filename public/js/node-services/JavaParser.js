@@ -75,12 +75,15 @@ Parser.prototype.isStringEmpty = function(str){
 }
 
 function handleRequest(req,res){
-	console.log("Request was recieved by Parser");
-
+	console.log("Request was recieved by Parser...");
+    console.log(req.body);
+	/*
     var parser = new Parser(req.body.state);
 	DB.save({
 		codeType : "java"
     });	
+	*/
+
     res.status(200).send("Request was recieved by Parser");
 }
 

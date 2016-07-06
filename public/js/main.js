@@ -1,24 +1,43 @@
 
-// Main File
 
-var FileReader = require("./filereader");
-var Parser     = require("./parser");
+var gateWayAPI = require('./node-services/gateway-api-service/routes');
 
-var filePath = "/Projects/48Hours/BasisPath/data/example1.java";
+var querystring = require('querystring');
+var http = require('http');
 
-//var filePath = "/Users/Carlos/workspace/48HOurs/BasisPath/data/example1.java";
+var data = { key : 'value'};
+var postData = querystring.stringify(data);
 
-var fileData = FileReader(filePath);
+var options = {
+    hostname: 'localhost',
+    port: 3000,
+    path: '/api/javaparser',
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+};
 
-var dataAsAtree = new Parser(fileData);
+var req = http.request(options, (res) => {
+    res.setEncoding('utf8');
 
-// //Make an SVG Container
-//  var svgContainer = d3.select("body").append("svg")
-//                                      .attr("width", 200)
-//                                      .attr("height", 200);
- 
-// //Draw the Circle
-//  var circle = svgContainer.append("circle")
-//                           .attr("cx", 30)
-//                           .attr("cy", 30)
-//                          .attr("r", 20);
+    console.log("postToJavaParser Request()");
+    res.on('data', (chunk) => {
+        console.log(`BODY: ${chunk}`);
+    });
+    
+    res.on('end', (e) => {
+        console.log(`No more data in response`);
+    });
+});
+
+req.on('error', (e) => {
+        console.log(`***********problem with request: ${e.message}`);
+});
+
+// write data to request body
+req.write(postData);
+req.end();
+
+
+
