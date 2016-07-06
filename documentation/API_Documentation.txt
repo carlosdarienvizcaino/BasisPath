@@ -1,0 +1,33 @@
+
+
+
+************** Gateway API ****************
+**************             ****************
+This is an external API.
+
+POST:
+    Request:
+        url: localhost:3000/api/basispath
+        Header:
+            Content-Type: application/json
+        
+        Body:
+            {
+                "codeType": <any codeType>
+                "sourceCode": <any source code that has been compiled>
+            }
+            
+    Successful Response:
+        Response:
+            status: 201 (Created)
+            resposee: <a uuid which for the batch sended>        
+            
+   Failed Response:
+        Response:
+            status: 406 (Not Supported)
+            response: { "Message" : "Only java is currently supported"}
+            
+            
+   
+
+    
