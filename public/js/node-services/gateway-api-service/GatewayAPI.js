@@ -4,7 +4,8 @@
 var uuid = require('uuid');
 var routes = require('./routes');
 
-function handleRequest(req,res){
+// Async Request
+function handlePOSTRequest(req,res){
     console.log("Request received by Gateway");
     console.log(req.body);
     
@@ -23,6 +24,13 @@ function handleRequest(req,res){
         res.status(406).send({Message: "Only Java is currently suported"});
 }
 
+// Sync Request
+function handleGETRequest(req,res){
+   console.log("GET Request received by Gateway");
+   routes.GETCodeExecutionGraph(req,res);
+}
+
 module.exports = {
-   handleRequest : handleRequest
+   handlePOSTRequest : handlePOSTRequest,
+   handleGETRequest  : handleGETRequest
 }

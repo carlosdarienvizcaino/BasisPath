@@ -1,3 +1,5 @@
+// public/js/node-services/gateway-api-services/routes.js
+
 var querystring = require('querystring');
 var http = require('http');
 
@@ -14,7 +16,7 @@ var postToJavaParserOptions = {
 var getCodeExecutionGraphOptions = {
     hostname: 'localhost',
     port: 3000,
-    path: '/api/cf',
+    path: '/api/cf/45',
     method: 'GET',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -48,17 +50,26 @@ function postToJavaParser(data){
     req.end();
 }
 
-function getCodeExecutionGraph(data){
-    
-   data = querystring.stringify(data);
+function getCodeExecutionGraph(request,response){
+    console.log("At getCodeExecutionGraph");
+    var data = querystring.stringify({});
     
     var req = http.request(getCodeExecutionGraphOptions, (res) =>{
         res.setEncoding('utf8');
-        
+ 
         res.on('data', (responseData) => {
-            console.log(responseData);
-            return responseData;
+            console.log("Data: " + responseData);
+            response.status(200).send("Sucessful: " + responseData);
         });
+        
+        res.on('end', (end) => {
+            console.log("The END" + end);
+        });
+        
+    });
+    
+    req.on('error', (error) =>{
+        console.log("Ups something went wrong " + error);
     });
     
     req.write(data);

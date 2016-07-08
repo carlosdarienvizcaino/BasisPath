@@ -98,7 +98,10 @@ function handlePOSTRequest(req,res){
 function handleGETRequest(req,res){
 	console.log("GET Request was received in CF");
 	console.log(req.params);
-	res.status(200).send("Data found");
+	res.status(200).send({
+		status : "COMPLETED",
+		data   : "Data data data"
+	});
 }
 
 module.exports = {

@@ -22,7 +22,7 @@ module.exports  = function(app){
         gatewayAPI.handlePOSTRequest(req,res);
     });
     
-    app.get('/api/basispath', function(req,res){
+    app.get('/api/basispath/:id', function(req,res){
         gatewayAPI.handleGETRequest(req,res);
     });
     
