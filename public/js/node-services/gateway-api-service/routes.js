@@ -11,6 +11,16 @@ var postToJavaParserOptions = {
     }
 };
 
+var getCodeExecutionGraphOptions = {
+    hostname: 'localhost',
+    port: 3000,
+    path: '/api/cf',
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+};
+
 
 function postToJavaParser(data){
     data = querystring.stringify(data);
@@ -38,6 +48,24 @@ function postToJavaParser(data){
     req.end();
 }
 
+function getCodeExecutionGraph(data){
+    
+   data = querystring.stringify(data);
+    
+    var req = http.request(getCodeExecutionGraphOptions, (res) =>{
+        res.setEncoding('utf8');
+        
+        res.on('data', (responseData) => {
+            console.log(responseData);
+            return responseData;
+        });
+    });
+    
+    req.write(data);
+    req.end();
+}
+
 module.exports = {
-    postToJavaParser : postToJavaParser
+    POSTJavaParser : postToJavaParser,
+    GETCodeExecutionGraph : getCodeExecutionGraph
 }

@@ -16,7 +16,11 @@ module.exports  = function(app){
     
     // Gateway API handles any incoming request 
     app.post('/api/basispath', function(req, res){
-        gatewayAPI.handleRequest(req,res);
+        gatewayAPI.handlePOSTRequest(req,res);
+    });
+    
+    app.get('/api/basispath', function(req,res){
+        gatewayAPI.handleGETRequest(req,res);
     });
     
     // Java Parser API
