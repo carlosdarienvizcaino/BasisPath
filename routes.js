@@ -10,9 +10,12 @@ var controlFlow = require('./public/js/node-services/CF');
 module.exports  = function(app){
     
     // Return main index file 
-    app.get('*', function(req,res){
+    
+    app.get('/app', function(req,res){
+        console.log("App Started");
         res.sendfile('./public/views/exampleindex.html');
     });
+    
     
     // Gateway API handles any incoming request 
     app.post('/api/basispath', function(req, res){
@@ -35,6 +38,10 @@ module.exports  = function(app){
     
    // Control Flow Tree Creator
    app.post('/api/cf', function(req,res){
-       controlFlow.handleRequest(req,res);
+       controlFlow.handlePOSTRequest(req,res);
+   });
+   
+   app.get('/api/cf/:id', function(req,res){
+       controlFlow.handleGETRequest(req,res);
    });
 }

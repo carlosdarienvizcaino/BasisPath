@@ -17,10 +17,6 @@ app.set('views', '.');
 
 app.use(express.static('js'));
 
-app.get('*', function(req, res) {
-    res.sendfile('./public/views/exampleindex.html');
-});
-
 // routes
 var routes = require('./routes')(app);
 

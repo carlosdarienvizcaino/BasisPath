@@ -86,7 +86,7 @@ function doExecutionPath(parentNode){
     }
 }
 
-function handleRequest(req,res){
+function handlePOSTRequest(req,res){
     // Log to a file
     DB.save({
         codeType : "c#",
@@ -95,6 +95,13 @@ function handleRequest(req,res){
     res.status(200).send("Request reached Control Flow Service");
 }
 
+function handleGETRequest(req,res){
+	console.log("GET Request was received in CF");
+	console.log(req.params);
+	res.status(200).send("Data found");
+}
+
 module.exports = {
-    handleRequest : handleRequest
+    handlePOSTRequest : handlePOSTRequest,
+	handleGETRequest  : handleGETRequest
 }
