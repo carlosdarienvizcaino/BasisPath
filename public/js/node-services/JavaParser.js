@@ -1,7 +1,7 @@
 
 // public/js/node-services/JavaParser.js
 
-var DB = require("../db/ParserDB");
+var DB = require("../db/JavaParserDB");
 
 function Parser(data){
  	if (data == null){
@@ -77,12 +77,12 @@ Parser.prototype.isStringEmpty = function(str){
 function handleRequest(req,res){
 	console.log("Request was recieved by Parser...");
     console.log(req.body);
-	/*
-    var parser = new Parser(req.body.state);
+	
+    //var parser = new Parser(req.body.sourceCode);
 	DB.save({
-		codeType : "java"
+        batchId  : req.body.batchId,
+        status   : "STARTED"
     });	
-	*/
 
     res.status(200).send("Request was recieved by Parser");
 }

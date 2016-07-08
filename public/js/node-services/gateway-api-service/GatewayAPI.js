@@ -5,10 +5,11 @@ var uuid = require('uuid');
 var routes = require('./routes');
 
 function handleRequest(req,res){
-   
+    console.log("Request received by Gateway");
+    console.log(req.body);
+    
     var id = uuid.v1();
     // Check for req body code-type
-    
     if (req.body.codeType && req.body.codeType === "java"){ 
         res.status(201).send(id);
         
