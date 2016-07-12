@@ -2,7 +2,6 @@
 // routes.js
 
 // require
-var gatewayAPI  = require("./public/js/node-services/gateway-api-service/GatewayAPI");
 var javaParser  = require("./public/js/node-services/JavaParser");
 var ast         = require('./public/js/node-services/AST');
 var controlFlow = require('./public/js/node-services/CF');
@@ -14,16 +13,6 @@ module.exports  = function(app){
     app.get('/app', function(req,res){
         console.log("App Started");
         res.sendfile('./public/views/exampleindex.html');
-    });
-    
-    
-    // Gateway API handles any incoming request 
-    app.post('/api/basispath', function(req, res){
-        gatewayAPI.handlePOSTRequest(req,res);
-    });
-    
-    app.get('/api/basispath/:id', function(req,res){
-        gatewayAPI.handleGETRequest(req,res);
     });
     
     // Java Parser API

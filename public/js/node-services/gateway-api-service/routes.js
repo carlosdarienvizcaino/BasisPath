@@ -1,29 +1,7 @@
 // public/js/node-services/gateway-api-services/routes.js
 
-var querystring = require('querystring');
-var http = require('http');
 
-var postToJavaParserOptions = {
-    hostname: 'localhost',
-    port: 3000,
-    path: '/api/javaparser',
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-};
-
-var getCodeExecutionGraphOptions = {
-    hostname: 'localhost',
-    port: 3000,
-    path: '/api/cf/45',
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
-};
-
-
+/*
 function postToJavaParser(data){
     data = querystring.stringify(data);
     
@@ -51,7 +29,6 @@ function postToJavaParser(data){
 }
 
 function getCodeExecutionGraph(request,response){
-    console.log("At getCodeExecutionGraph");
     var data = querystring.stringify({});
     
     var req = http.request(getCodeExecutionGraphOptions, (res) =>{
@@ -75,8 +52,18 @@ function getCodeExecutionGraph(request,response){
     req.write(data);
     req.end();
 }
+*/
 
-module.exports = {
-    POSTJavaParser : postToJavaParser,
-    GETCodeExecutionGraph : getCodeExecutionGraph
+var routeHttpHandler = require('./routeHttpHandler');
+var graphHttpHandler = require('./graphHttpHandler');
+
+module.exports  = function(app){
+
+    app.post('/api/basispath', function(req, res){
+        routeHttpHandler.handlePOSTRequest(req,res);
+    });
+    
+    app.get('/api/basispath/:id', function(req,res){
+        graphHttpHandler.handleGETRequest(req,res);
+    });
 }

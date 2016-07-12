@@ -74,20 +74,4 @@ Parser.prototype.isStringEmpty = function(str){
     return false;
 }
 
-function handleRequest(req,res){
-	console.log("Request was recieved by Parser...");
-    console.log(req.body);
-	
-    //var parser = new Parser(req.body.sourceCode);
-	DB.save({
-        batchId  : req.body.batchId,
-        status   : "STARTED"
-    });	
-
-    res.status(200).send("Request was recieved by Parser");
-}
-
-module.exports = {
-    handleRequest : handleRequest
-}
     
