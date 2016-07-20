@@ -19,7 +19,7 @@ var routes = require('./routes')(app);
 
 // Start Gateway Service at http://localhost:3006
 app.listen(port, function() {
-    console.log("Code Execution Graph is hosted on port " + port + " !");
+    console.log("Java Parser is hosted on port " + port + " !");
 })
  
  

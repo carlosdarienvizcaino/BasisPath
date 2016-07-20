@@ -20,14 +20,80 @@ POST:
     Successful Response:
         Response:
             status: 201 (Created)
-            resposee: <a uuid which for the batch sended>        
+            respose: <a uuid which for the batch sended>        
             
    Failed Response:
         Response:
             status: 406 (Not Supported)
             response: { "Message" : "Only java is currently supported"}
- 
             
+************** Java Parser ****************
+**************             ****************    
+ POST 
+    Request:
+        url: localhost:3006/api/javaparser
+        
+        Body: 
+            {
+                batchId      : <any id>
+                sourceCode   : <ONLY java source code that has been successfully compiles>
+            }  
+         
+         Successful Response:
+            Response:
+                status: 200 (OK)
+                response: {}
+                
+          Failed Response
+                status: 400 (Bad Request)
+                response: {Message : no source code was provided}
+                  
+************** AST ****************
+**************     ****************    
+
+POST 
+    Request:
+        url: localhost:3008/api/ast
+        
+        Body: 
+            {
+                batchId  : <any id>
+                codeType : <any programming language>
+                tokens   : <a list of expression tokesn>
+            }  
+         
+         Successful Response:
+            Response:
+                status: 200 (OK)
+                response: tokes[]
+                
+          Failed Response
+                status: 400 (Bad Request)
+                response: {Message : token list cannot be empty}
+            
+ 
+************** Code Execution Graph ****************
+**************                      ****************    
+
+POST 
+    Request:
+        url: localhost:3004/api/ast
+        
+        Body: 
+            {
+                batchId  : <any id>
+                codeType : <any programming language>
+                ast   : <an N-ary Tree Data Structure with each token expression nodes >
+            }  
+         
+         Successful Response:
+            Response:
+                status: 200 (OK)
+                response: {}
+                
+          Failed Response
+                status: 400 (Bad Request)
+                response: {Message : Missing AST}           
             
    
 
