@@ -14,3 +14,4 @@ ADD /public/js/node-services/gateway-api-service/ /usr/src/app
 
 EXPOSE 3002
 CMD [ "npm", "start" ] 
+

@@ -11,7 +11,9 @@ var connection = mongoose.createConnection(url);
 var Schema = mongoose.Schema;
 // Define a model with this mongoose instance
 mongoose.model("AST_Batch", new Schema({
-    codeType: String
+    batchId  : String,
+    codeType : String,
+    status   : String
 }));
 
 // Retrieve model from connection

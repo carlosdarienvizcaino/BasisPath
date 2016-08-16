@@ -3,7 +3,7 @@ var axios = require('axios');
 
 function POST(reqData){ 
       
-   var url = 'http://localhost:3000/api/javaparser';
+   var url = 'http://localhost:3006/api/javaparser';
    axios.post(url, createRequestBody(reqData) )
    .then(function(response){
        
