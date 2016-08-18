@@ -1,7 +1,7 @@
 
 // routes.js
 
-var javaParserHttpHandler = require('./javaParserHttpHandler');
+var javaParserHttpHandler = require('./JavaParserHttpHandler');
 
 module.exports  = function(app){
    

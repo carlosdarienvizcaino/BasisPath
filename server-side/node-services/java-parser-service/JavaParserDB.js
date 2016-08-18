@@ -2,7 +2,7 @@
 // public/js/db/JavaParserDB.js
 
 var mongoose = require('mongoose');
-var url = require('../db').JavaParserUrl;
+var url = require('./db').JavaParserUrl;
 
 // Create a connection
 var connection = mongoose.createConnection(url);

@@ -1,7 +1,7 @@
 
 // public/js/node-services/JavaParser.js
 
-var DB = require("../db/JavaParserDB");
+var DB = require("./JavaParserDB");
 
 function Parser(data){
  	if (data == null){
