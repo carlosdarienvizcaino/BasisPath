@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var url = require('./db').JavaParserUrl;
 
 // Create a connection
-var connection = mongoose.createConnection(url);
+var connection = mongoose.createConnection("mongodb://mongo:27017");
 
 // Get schema from this mongoose instance
 var Schema = mongoose.Schema;
