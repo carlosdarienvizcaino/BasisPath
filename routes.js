@@ -2,7 +2,6 @@
 // routes.js
 
 // require
-var gatewayAPI  = require("./public/js/node-services/GatewayAPI");
 var javaParser  = require("./public/js/node-services/JavaParser");
 var ast         = require('./public/js/node-services/AST');
 var controlFlow = require('./public/js/node-services/CF');
@@ -10,13 +9,10 @@ var controlFlow = require('./public/js/node-services/CF');
 module.exports  = function(app){
     
     // Return main index file 
-    app.get('*', function(req,res){
-        res.sendfile('./public/views/exampleindex.html');
-    });
     
-    // Gateway API handles any incoming request 
-    app.post('/api/basispath', function(req, res){
-        gatewayAPI.handleRequest(req,res);
+    app.get('/app', function(req,res){
+        console.log("App Started");
+        res.sendfile('./public/views/exampleindex.html');
     });
     
     // Java Parser API
@@ -31,6 +27,10 @@ module.exports  = function(app){
     
    // Control Flow Tree Creator
    app.post('/api/cf', function(req,res){
-       controlFlow.handleRequest(req,res);
+       controlFlow.handlePOSTRequest(req,res);
+   });
+   
+   app.get('/api/cf/:id', function(req,res){
+       controlFlow.handleGETRequest(req,res);
    });
 }

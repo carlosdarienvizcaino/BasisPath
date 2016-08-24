@@ -5,13 +5,14 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./public/js/node-services/gateway-api-service/app.js"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/carlosdarienvizcaino/BasisPath.git"
   },
   "dependencies": {
+    "mongoose": "^4.4.20",
     "async": "^2.0.0-rc.6",
     "axios": "^0.12.0",
     "body-parser": "~1.4.2",
